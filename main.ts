@@ -8,30 +8,6 @@ namespace SpriteKind {
     export const wallsmasher = SpriteKind.create()
     export const armoredyo = SpriteKind.create()
 }
-function spawn_world_2_boss () {
-    for (let value11 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        creator2 = sprites.create(img`
-            . . . . . . 6 6 6 6 . . . . . . 
-            . . . . 6 6 9 9 9 9 6 6 . . . . 
-            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
-            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
-            . . 6 8 9 9 9 9 9 9 9 9 8 6 . . 
-            . . 6 8 9 9 9 9 9 9 9 9 8 6 . . 
-            . . 6 8 8 8 9 9 9 9 8 8 8 6 . . 
-            . . 6 9 8 a a 8 8 a a 8 9 6 . . 
-            . . 6 8 8 a a 9 9 a a 8 8 6 . . 
-            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
-            . . 6 6 6 8 8 9 9 9 8 6 6 6 6 . 
-            6 8 9 9 9 8 9 6 9 6 8 9 9 9 8 6 
-            6 9 9 9 9 9 6 6 6 6 9 9 9 9 9 6 
-            6 9 6 9 6 9 6 6 6 6 9 6 9 6 9 6 
-            . . . . . 6 6 6 6 6 6 . . . . . 
-            . . . . . . . 6 6 6 . . . . . . 
-            `, SpriteKind.creator)
-        tiles.placeOnTile(creator2, value11)
-        tiles.setTileAt(value11, assets.tile`transparency16`)
-    }
-}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.boss, function (sprite, otherSprite) {
     if (hero.vy > 0) {
         animation.runImageAnimation(
@@ -220,7 +196,7 @@ function lifelose () {
     destroy_all(sprites.allOfKind(SpriteKind.Enemy))
     destroy_all(sprites.allOfKind(SpriteKind.boss))
     destroy_all(sprites.allOfKind(SpriteKind.weakeryo))
-    tiles.placeOnRandomTile(mySprite, assets.tile`transparency16`)
+    tiles.placeOnRandomTile(mySprite, sprites.dungeon.collectibleBlueCrystal)
     startLevel()
     isdiying = 0
 }
@@ -289,7 +265,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.magaboss, function (sprite, othe
     }
 })
 function create_weak_enemys () {
-    for (let value of tiles.getTilesByType(assets.tile`transparency16`)) {
+    for (let value of tiles.getTilesByType(assets.tile`myTile4`)) {
         my_small_eniemy = sprites.create(img`
             . . . . . . 7 7 7 7 . . . . . . 
             . . . . 7 7 1 1 1 1 7 7 . . . . 
@@ -320,17 +296,8 @@ function create_weak_enemys () {
 controller.B.onEvent(ControllerButtonEvent.Pressed, function () {
     jump()
 })
-function wall_erase (width: number, hight: number) {
-    for (let value5 = 0; value5 <= width; value5++) {
-        wall_X = value5
-        for (let value6 = 0; value6 <= hight; value6++) {
-            wall_Y = value6
-            tiles.setWallAt(tiles.getTileLocation(wall_Y, wall_X), false)
-        }
-    }
-}
 function makecoins () {
-    for (let value10 of tiles.getTilesByType(assets.tile`transparency16`)) {
+    for (let value10 of tiles.getTilesByType(assets.tile`myTile1`)) {
         mySprite = sprites.create(img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -353,11 +320,18 @@ function makecoins () {
         tiles.setTileAt(value10, assets.tile`transparency16`)
     }
 }
-function spawn_world_boss () {
-    for (let value112 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        worldboss = sprites.create(assets.image`world boss`, SpriteKind.magaboss)
-        tiles.placeOnTile(worldboss, value112)
-        tiles.setTileAt(value112, assets.tile`transparency16`)
+function destroy_all (array: any[]) {
+    for (let value of array) {
+        sprites.destroy(value)
+    }
+}
+function wall_erase (width: number, hight: number) {
+    for (let value5 = 0; value5 <= width; value5++) {
+        wall_X = value5
+        for (let value6 = 0; value6 <= hight; value6++) {
+            wall_Y = value6
+            tiles.setWallAt(tiles.getTileLocation(wall_Y, wall_X), false)
+        }
     }
 }
 function LEVELUP (LEVEL: number) {
@@ -369,7 +343,7 @@ function LEVELUP (LEVEL: number) {
     destroy_all(sprites.allOfKind(SpriteKind.creator))
     destroy_all(sprites.allOfKind(SpriteKind.wallsmasher))
     destroy_all(sprites.allOfKind(SpriteKind.armoredyo))
-    tiles.placeOnRandomTile(hero, assets.tile`transparency16`)
+    tiles.placeOnRandomTile(hero, sprites.dungeon.collectibleBlueCrystal)
     makecoins()
     create_enemys()
     create_weak_enemys()
@@ -440,13 +414,35 @@ sprites.onOverlap(SpriteKind.armoredyo, SpriteKind.armoredyo, function (sprite, 
         lifelose()
     }
 })
-function destroy_all (array: Sprite[]) {
-    for (let value2 of array) {
-        sprites.destroy(value2)
+function spawn_world_2_boss () {
+    for (let value11 of tiles.getTilesByType(assets.tile`myTile13`)) {
+        creator = sprites.create(img`
+            . . . . . . 6 6 6 6 . . . . . . 
+            . . . . 6 6 9 9 9 9 6 6 . . . . 
+            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
+            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
+            . . 6 8 9 9 9 9 9 9 9 9 8 6 . . 
+            . . 6 8 9 9 9 9 9 9 9 9 8 6 . . 
+            . . 6 8 8 8 9 9 9 9 8 8 8 6 . . 
+            . . 6 9 8 a a 8 8 a a 8 9 6 . . 
+            . . 6 8 8 a a 9 9 a a 8 8 6 . . 
+            . . . 6 9 9 9 9 9 9 9 9 6 . . . 
+            . . 6 6 6 8 8 9 9 9 8 6 6 6 6 . 
+            6 8 9 9 9 8 9 6 9 6 8 9 9 9 8 6 
+            6 9 9 9 9 9 6 6 6 6 9 9 9 9 9 6 
+            6 9 6 9 6 9 6 6 6 6 9 6 9 6 9 6 
+            . . . . . 6 6 6 6 6 6 . . . . . 
+            . . . . . . . 6 6 6 . . . . . . 
+            `, SpriteKind.creator)
+        tiles.placeOnTile(creator, value11)
+        tiles.setTileAt(value11, assets.tile`myTile14`)
     }
 }
+scene.onOverlapTile(SpriteKind.Enemy, assets.tile`myTile`, function (sprite, location) {
+    tiles.setTileAt(location, assets.tile`transparency16`)
+})
 function bossattack () {
-    for (let value3 of tiles.getTilesByType(assets.tile`transparency16`)) {
+    for (let value3 of tiles.getTilesByType(assets.tile`myTile3`)) {
         myboss = sprites.create(assets.image`boss`, SpriteKind.boss)
         tiles.placeOnTile(myboss, value3)
         tiles.setTileAt(value3, assets.tile`transparency16`)
@@ -589,49 +585,35 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.weakeryo, function (sprite, othe
         lifelose()
     }
 })
-function create_enemys () {
-    for (let value22 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        myEnemy = sprites.create(assets.image`enemie`, SpriteKind.Enemy)
-        tiles.placeOnTile(myEnemy, value22)
-        tiles.setTileAt(value22, assets.tile`transparency16`)
-        if (Math.percentChance(50)) {
-            myEnemy.vx = 30
-        } else {
-            myEnemy.vx = -30
-        }
-    }
-}
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Projectile, function (sprite, otherSprite) {
     lifelose()
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile8`, function (sprite, location) {
+    hero.vy = -50
+})
+function create_armored_enemys () {
+    for (let value14 of tiles.getTilesByType(assets.tile`myTile18`)) {
+        my_armored_enemy = sprites.create(assets.image`enemie`, SpriteKind.armoredyo)
+        tiles.placeOnTile(my_armored_enemy, value14)
+        tiles.setTileAt(value14, assets.tile`transparency16`)
+        if (Math.percentChance(50)) {
+            my_armored_enemy.vx = 30
+        } else {
+            my_armored_enemy.vx = -30
+        }
+    }
+}
 info.onLifeZero(function () {
     sprites.destroy(hero)
     game.gameOver(false)
 })
 function jump () {
-    if (!(hero.tileKindAt(TileDirection.Top, assets.tile`transparency16`))) {
+    if (!(hero.tileKindAt(TileDirection.Top, assets.tile`myTile10`))) {
         if (isdiying == 0) {
             if (hero.isHittingTile(CollisionDirection.Bottom)) {
                 animation.runImageAnimation(
                 hero,
-                [img`
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    . . . . . . . . . . . . . . . . 
-                    `],
+                assets.animation`hero animation`,
                 100,
                 false
                 )
@@ -664,6 +646,18 @@ function jump () {
                 runningright = 0
                 runningleft = 0
             }
+        }
+    }
+}
+function create_enemys () {
+    for (let value2 of tiles.getTilesByType(assets.tile`myTile`)) {
+        myEnemy = sprites.create(assets.image`enemie`, SpriteKind.Enemy)
+        tiles.placeOnTile(myEnemy, value2)
+        tiles.setTileAt(value2, assets.tile`transparency16`)
+        if (Math.percentChance(50)) {
+            myEnemy.vx = 30
+        } else {
+            myEnemy.vx = -30
         }
     }
 }
@@ -729,9 +723,6 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.rotatingCoin, function (sprite, 
     info.changeScoreBy(1)
     sprites.destroy(otherSprite, effects.spray, 500)
 })
-scene.onOverlapTile(SpriteKind.Enemy, assets.tile`transparency16`, function (sprite, location) {
-    tiles.setTileAt(location, assets.tile`transparency16`)
-})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.creator, function (sprite, otherSprite) {
     if (hero.vy > 0) {
         animation.runImageAnimation(
@@ -794,25 +785,25 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.creator, function (sprite, other
         music.play(music.createSong(hex`0078000408020405001c000f0a006400f4010a00000400000000000000000000000000000000026f0000000400011e0400080005191d27292a08000c00011e0c0010000225291000140002292c14001800012718001c000327292a1c00200002272a20002400012c24002800012928002c0002272c2c0030000225293000340002292c34003800012c38003c000325292c3c00400002292c07001c00020a006400f401640000040000000000000000000000000000000003750000000400012a0400080002272c08000c0002292c0c00100001291000140002272a1400180002292a18001c0002272a1c00200002292a2000240003292a2c2400280002292c28002c00012a2c0030000427292a2c300034000327292c3400380003272a2c38003c000424272a2c3c0040000325292c08001c000e050046006603320000040a002d00000064001400013200020100029c000000040006191b1e22272a040008000320272c08000c0006191b2025292c0c00100005191b20252c10001400041d22252914001800061d2022252a2c18001c0005191e22242c1c002000031e272c2000240005191d2224292400280005191e25272c28002c00051d2225272c2c00300004191e272c3000340004191e24293400380004191e252c38003c00041e22272a3c004000071d1e2425292a2c09010e02026400000403780000040a000301000000640001c80000040100000000640001640000040100000000fa0004af00000401c80000040a00019600000414000501006400140005010000002c0104dc00000401fa0000040a0001c8000004140005d0076400140005d0070000c800029001f40105c201f4010a0005900114001400039001000005c201f4010500058403050032000584030000fa00049001000005c201f4010500058403c80032000584030500640005840300009001049001000005c201f4010500058403c80064000584030500c8000584030000f40105ac0d000404a00f00000a0004ac0d2003010004a00f0000280004ac0d9001010004a00f0000280002d00700040408070f0064000408070000c80003c800c8000e7d00c80019000e64000f0032000e78000000fa00032c01c8000ee100c80019000ec8000f0032000edc000000fa0003f401c8000ea901c80019000e90010f0032000ea4010000fa0001c8000004014b000000c800012c01000401c8000000c8000190010004012c010000c80002c800000404c8000f0064000496000000c80002c2010004045e010f006400042c010000640002c409000404c4096400960004f6090000f40102b80b000404b80b64002c0104f40b0000f401022003000004200300040a000420030000ea01029001000004900100040a000490010000900102d007000410d0076400960010d0070000c80085000000010005020406080a04000500040405060708000900030506070c000d0003050607100011000204061400150003040608180019000502030406071c001d0003040607200021000203062400250002050728002900030304062c002d0003040607300031000403040507340035000402030406380039000203063c003d00050304050608`), music.PlaybackMode.InBackground)
         pause(600)
         sprites.destroy(otherSprite)
-        for (let value9 of tiles.getTilesByType(assets.tile`transparency16`)) {
+        for (let value9 of tiles.getTilesByType(assets.tile`myTile14`)) {
             tiles.setTileAt(value9, assets.tile`transparency16`)
         }
     }
 })
-function create_armored_enemys () {
-    for (let value14 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        my_armored_enemy = sprites.create(assets.image`enemie`, SpriteKind.armoredyo)
-        tiles.placeOnTile(my_armored_enemy, value14)
-        tiles.setTileAt(value14, assets.tile`transparency16`)
-        if (Math.percentChance(50)) {
-            my_armored_enemy.vx = 30
-        } else {
-            my_armored_enemy.vx = -30
-        }
-    }
-}
-scene.onOverlapTile(SpriteKind.Player, assets.tile`transparency16`, function (sprite, location) {
-    hero.vy = -50
+scene.onOverlapTile(SpriteKind.Player, assets.tile`myTile10`, function (sprite, location) {
+    sprite.vy = -10
+    timer.background(function () {
+        pause(1000)
+        tiles.setTileAt(location, assets.tile`transparency16`)
+    })
+})
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleRedCrystal, function (sprite, location) {
+    sprite.vx = 0
+    sprite.vy = 0
+    tiles.setTileAt(location, sprites.castle.tilePath2)
+    LEVEL += 1
+    startLevel()
+    info.setLife(10)
 })
 function startLevel () {
     if (1 == LEVEL) {
@@ -882,40 +873,40 @@ function startLevel () {
         game.showLongText("level 15", DialogLayout.Top)
     }
     if (16 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level16`)
+        tiles.setCurrentTilemap(tilemap`level16  fbo`)
         game.showLongText("level 16", DialogLayout.Top)
     }
     if (17 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level17`)
+        tiles.setCurrentTilemap(tilemap`level17 ef`)
         game.showLongText("level 17", DialogLayout.Top)
         game.showLongText("World 3", DialogLayout.Center)
     }
     if (18 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level18`)
+        tiles.setCurrentTilemap(tilemap`level18 ewr`)
         game.showLongText("level 18", DialogLayout.Top)
     }
     if (19 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level19`)
+        tiles.setCurrentTilemap(tilemap`level19 dsjfslfe`)
         game.showLongText("level 19", DialogLayout.Top)
     }
     if (20 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level20`)
+        tiles.setCurrentTilemap(tilemap`level37`)
         game.showLongText("level 20", DialogLayout.Top)
     }
     if (21 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level21`)
+        tiles.setCurrentTilemap(tilemap`level38`)
         game.showLongText("level 21", DialogLayout.Top)
     }
     if (22 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level22`)
+        tiles.setCurrentTilemap(tilemap`level23 jdildkajdlskDJ`)
         game.showLongText("level 22", DialogLayout.Top)
     }
     if (23 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level23`)
+        tiles.setCurrentTilemap(tilemap`level23 jdildkajdlskDJ`)
         game.showLongText("level 23", DialogLayout.Top)
     }
     if (24 == LEVEL) {
-        tiles.setCurrentTilemap(tilemap`level24`)
+        tiles.setCurrentTilemap(tilemap`level24 DLFKS`)
         game.showLongText("level 24", DialogLayout.Top)
     }
     if (25 == LEVEL) {
@@ -923,6 +914,98 @@ function startLevel () {
     }
     LEVELUP(1)
 }
+function spawn_world_boss () {
+    for (let value11 of tiles.getTilesByType(assets.tile`myTile5`)) {
+        worldboss = sprites.create(assets.image`world boss`, SpriteKind.magaboss)
+        tiles.placeOnTile(worldboss, value11)
+        tiles.setTileAt(value11, assets.tile`transparency16`)
+    }
+}
+scene.onOverlapTile(SpriteKind.Player, sprites.dungeon.collectibleInsignia, function (sprite, location) {
+    if (hero.tileKindAt(TileDirection.Top, sprites.dungeon.collectibleInsignia)) {
+        info.changeScoreBy(1)
+        coin = sprites.create(img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 5 5 5 5 5 5 4 . . . . 
+            . . . . 5 5 5 5 5 5 5 5 4 . . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . 5 5 5 5 f f 5 5 5 5 4 . . 
+            . . . . 5 5 5 5 5 5 5 5 4 . . . 
+            . . . . . 5 5 5 5 5 5 4 . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `, SpriteKind.Food)
+        tiles.placeOnTile(coin, location)
+        tiles.setTileAt(location, assets.tile`transparency16`)
+        music.play(music.createSoundEffect(WaveShape.Sine, 1844, 3779, 174, 44, 500, SoundExpressionEffect.None, InterpolationCurve.Linear), music.PlaybackMode.InBackground)
+        animation.runImageAnimation(
+        coin,
+        [img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . 5 5 5 5 4 . . . . . . 
+            . . . . 5 5 5 5 5 5 4 . . . . . 
+            . . . . 5 5 5 f 5 5 4 . . . . . 
+            . . . . 5 5 5 f 5 5 4 . . . . . 
+            . . . . 5 5 5 f 5 5 4 . . . . . 
+            . . . . 5 5 5 5 5 5 4 . . . . . 
+            . . . . . 5 5 5 5 4 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `,img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . 5 5 5 4 . . . . . . 
+            . . . . . . 5 f 5 4 . . . . . . 
+            . . . . . . 5 5 5 4 . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `,img`
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            . . . . . . . . . . . . . . . . 
+            `],
+        500,
+        false
+        )
+        sprites.destroy(coin, effects.spray, 500)
+        info.changeScoreBy(1)
+    }
+})
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSprite) {
     if (hero.vy > 0) {
         animation.runImageAnimation(
@@ -989,24 +1072,23 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function (sprite, otherSp
         lifelose()
     }
 })
-let wallsmasher2: Sprite = null
+let wallsmasher: Sprite = null
 let projectile: Sprite = null
-let my_armored_enemy: Sprite = null
-let myEnemy: Sprite = null
-let myboss: Sprite = null
+let coin: Sprite = null
 let worldboss: Sprite = null
+let myEnemy: Sprite = null
+let my_armored_enemy: Sprite = null
+let myboss: Sprite = null
+let creator: Sprite = null
 let wall_Y = 0
 let wall_X = 0
 let my_small_eniemy: Sprite = null
 let mySprite: Sprite = null
-let creator2: Sprite = null
 let isdiying = 0
 let runningright = 0
 let runningleft = 0
 let LEVEL = 0
 let hero: Sprite = null
-let running = 0
-let yvel = 0
 game.showLongText("SUPER ARMAAN WORLD", DialogLayout.Center)
 game.showLongText("get to the fire orb without touching the spikes! collect coins from chests and blue gems. hit the blue gems from underneath to open them.", DialogLayout.Full)
 music.play(music.stringPlayable("D E F E D F E D ", 120), music.PlaybackMode.LoopingInBackground)
@@ -1016,6 +1098,8 @@ scene.cameraFollowSprite(hero)
 LEVELUP(1)
 game.showLongText("level 1", DialogLayout.Top)
 hero.ay = 300
+let yvel = 0
+let running = 0
 info.setScore(0)
 info.setLife(10)
 LEVEL = game.askForNumber("WHAT LEVEL WOULD YOU LIKE TO START ON?")
@@ -1023,7 +1107,7 @@ startLevel()
 runningleft = 0
 runningright = 0
 isdiying = 0
-tiles.placeOnRandomTile(hero, assets.tile`transparency16`)
+tiles.placeOnRandomTile(hero, sprites.dungeon.collectibleBlueCrystal)
 game.onUpdate(function () {
     if (isdiying == 0) {
         if (controller.right.isPressed()) {
@@ -1243,10 +1327,10 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
-    if (mySprite.tileKindAt(TileDirection.Right, assets.tile`transparency16`) && hero.vx > 0) {
+    if (mySprite.tileKindAt(TileDirection.Right, assets.tile`myTile10`) && hero.vx > 0) {
         hero.vx = 0
     }
-    if (mySprite.tileKindAt(TileDirection.Left, assets.tile`transparency16`) && hero.vx < 0) {
+    if (mySprite.tileKindAt(TileDirection.Left, assets.tile`myTile10`) && hero.vx < 0) {
         hero.vx = 0
     }
 })
@@ -1262,12 +1346,12 @@ game.onUpdate(function () {
     }
 })
 game.onUpdate(function () {
-    for (let value42 of sprites.allOfKind(SpriteKind.armoredyo)) {
-        if (value42.isHittingTile(CollisionDirection.Left)) {
-            value42.vx = 30
+    for (let value4 of sprites.allOfKind(SpriteKind.armoredyo)) {
+        if (value4.isHittingTile(CollisionDirection.Left)) {
+            value4.vx = 30
         } else {
-            if (value42.isHittingTile(CollisionDirection.Right)) {
-                value42.vx = -30
+            if (value4.isHittingTile(CollisionDirection.Right)) {
+                value4.vx = -30
             }
         }
     }
@@ -1278,7 +1362,7 @@ game.onUpdate(function () {
     }
 })
 game.onUpdateInterval(2000, function () {
-    for (let value12 of sprites.allOfKind(SpriteKind.armoredyo)) {
+    for (let value of sprites.allOfKind(SpriteKind.armoredyo)) {
         projectile = sprites.createProjectileFromSprite(img`
             . f f f . . . . . . . . f f f . 
             f f c . . . . . . . f c b b c . 
@@ -1296,13 +1380,13 @@ game.onUpdateInterval(2000, function () {
             . f 1 f f f 1 b b b c f . . . . 
             . . f b b b b b b c f . . . . . 
             . . . f f f f f f f . . . . . . 
-            `, value12, -50, 0)
+            `, value, -50, 0)
     }
 })
 game.onUpdateInterval(800, function () {
-    for (let value92 of sprites.allOfKind(SpriteKind.rotatingCoin)) {
+    for (let value9 of sprites.allOfKind(SpriteKind.rotatingCoin)) {
         animation.runImageAnimation(
-        value92,
+        value9,
         [img`
             . . . . . . . . . . . . . . . . 
             . . . . . . . . . . . . . . . . 
@@ -1446,8 +1530,8 @@ game.onUpdateInterval(800, function () {
     }
 })
 game.onUpdateInterval(10000, function () {
-    for (let value122 of tiles.getTilesByType(assets.tile`transparency16`)) {
-        wallsmasher2 = sprites.create(img`
+    for (let value12 of tiles.getTilesByType(assets.tile`myTile14`)) {
+        wallsmasher = sprites.create(img`
             . . . . . . 9 9 9 9 . . . . . . 
             . . . . 9 9 1 1 1 1 9 9 . . . . 
             . . . 9 b 1 1 1 1 1 1 b 9 . . . 
@@ -1465,8 +1549,8 @@ game.onUpdateInterval(10000, function () {
             . . . . . 9 9 9 9 9 9 . . . . . 
             . . . . . . . 9 9 9 . . . . . . 
             `, SpriteKind.wallsmasher)
-        tiles.placeOnTile(wallsmasher2, value122)
-        wallsmasher2.vx = -30
-        wallsmasher2.setFlag(SpriteFlag.DestroyOnWall, true)
+        tiles.placeOnTile(wallsmasher, value12)
+        wallsmasher.vx = -30
+        wallsmasher.setFlag(SpriteFlag.DestroyOnWall, true)
     }
 })
